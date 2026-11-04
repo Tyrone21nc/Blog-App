@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Django Blog</title>
+    <!-- Tailwind CSS CDN for modern UI -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .main2{
+            display: flex;
+            align-items: center;
+            border: 2px solid black;
+            gap: 20px;
+        }
+
+    </style>
+
+
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+
+    <!-- Navigation Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200 py-6 mb-8">
+        <div class="max-w-3xl mx-auto px-4">
+            <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">
+                <a href="{% url 'post_list' %}" class="hover:text-indigo-600 transition">My Django Blog</a>
+            </h1>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+     <main class="border-gray-600 main2">
+        <button>create a post</button>
+     </main>
+    <main class="max-w-3xl mx-auto px-4 pb-16">
+        <div class="space-y-8">
+            {% for post in posts %}
+                <!-- Individual Post Card -->
+                <article class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden transition hover:shadow-md p-6 sm:p-8">
+                    
+                    <!-- Post Title -->
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">
+                        <a href="{% url 'post_detail' post.pk %}" class="hover:text-indigo-600 transition">
+                            {{ post.title }}
+                        </a>
+                    </h2>
+                    
+                    <!-- Metadata (Author & Date) -->
+                    <div class="flex items-center text-sm text-gray-500 mb-6 space-x-2">
+                        <span class="font-medium text-gray-700">Published by {{ post.author }}</span>
+                        <span>&bull;</span>
+                        <time datetime="{{ post.created_at }}">{{ post.created_at }}</time>
+                    </div>
+
+                    <!-- Full Body Text (No truncation) -->
+                    <div class="text-gray-700 leading-relaxed whitespace-pre-line mb-6">
+                        {{ post.body }}
+                    </div>
+
+                    <!-- Read More / Detail Link -->
+                    <div>
+                        <a href="{% url 'post_detail' post.pk %}" class="inline-flex items-center text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition">
+                            Read full post &rarr;
+                        </a>
+                    </div>
+
+                </article>
+            {% empty %}
+                <div class="text-center py-12 bg-white rounded-2xl border border-gray-200 p-8">
+                    <p class="text-gray-500 text-lg">No blog posts found yet. Check back soon!</p>
+                </div>
+            {% endfor %}
+        </div>
+    </main>
+
+</body>
+</html>
